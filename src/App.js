@@ -2,7 +2,9 @@ import "./App.css";
 import { useState } from "react";
 import styled from "styled-components";
 import ListAll from "./ListAll";
-import { BsFillPlusSquareFill } from "react-icons/bs";
+// import {Checkbox, Switch} from 'antd';
+import {Switch} from 'antd';
+import 'antd/dist/antd.css';  
 //---------------------------------------
 const Container = styled.div`
   background-color: #636363;
@@ -90,27 +92,55 @@ const Container = styled.div`
 function App() {
   const [item, setItem] = useState("");
   const [data, setData] = useState([
-    "Aaaaaaaa",
-    "Bbbbbbbbbb",
-    "Ccccccccccc",
-    "Ddddddddd",
-    "Eeeeeeeeeee",
+    {key:0,value:"Aaaaaaaa",isCheck:false},
+    {key:1,value:"Bbbbbbbbbb",isCheck:false},
+    {key:2,value:"Ccccccccccc",isCheck:false},
+    {key:3,value:"Ddddddddd",isCheck:false},
+    {key:4,value:"Eeeeeeeeeee",isCheck:false}
   ]);
 
-  function addItem(item) {
-    if (item === "") {
+  function addItem(val) {
+    if (val === "") {
       return;
     }
-    const newData = [...data, item];
+    const addTodo =  {key:data.length+1, value:val , isCheck:false}
+    const newData = [...data, addTodo].map((item, index) => {
+      return {
+        ...item,
+        key: index
+      }
+    });
     setData(newData);
     // setItem("");
   }
 
   function handleDelete(index) {
     const newData = [...data];
-    newData.splice(index, 1);
-    setData(newData);
+    const dataIndex = newData.map(x=>x.key).indexOf(index)
+    newData.splice(dataIndex, 1);
+    const newData1 = newData.map((item, index) => {
+      return {
+        ...item,
+        key: index
+      }
+    })
+    setData(newData1);
   }
+
+  function handleCheck(index) {
+    const newData = [...data];
+    console.log(newData);
+    const dataIndex = newData.map(x=>x.key).indexOf(index);
+    if(newData[dataIndex].isCheck===true){
+      newData[dataIndex].isCheck=false;
+      setData(newData);
+    }else {
+      newData[dataIndex].isCheck=true;
+      setData(newData);
+    }   
+  } 
+
+  
   return (
     <div className="App">
       <Container>
@@ -119,9 +149,10 @@ function App() {
           <span>Get things done,one item add a time</span>
         </div>
         <div className="ListArea">
-          <ListAll data={data} handleDelete={handleDelete} />
+          <ListAll data={data} handleDelete={handleDelete} handleCheck={handleCheck} />
         </div>
         <div className="Footer">
+        {/* <Switch checked={isSwitch} onChange={handleSwitch} /> */}
           <p>Add to todo list</p>
           <div className="addArea">
             <input
@@ -136,8 +167,6 @@ function App() {
                 addItem(item);
               }}
             >
-              <BsFillPlusSquareFill />
-              //待處理
             </button>
           </div>
         </div>

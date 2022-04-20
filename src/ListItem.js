@@ -6,6 +6,7 @@ const ListDiv = styled.div`
   width: 100%;
   border: 2px solid #6eace6;
   border-left: 4px solid #6eace6;
+  text-decoration: ${(props) => props.isCheck ? 'line-through' : 'none'};
   margin-bottom: 10px;
   border-radius: 5px;
   color: white;
@@ -16,6 +17,8 @@ const ListDiv = styled.div`
   justify-content: flex-start;
   align-content: stretch;
   align-items: center;
+  // display:${(props) => props.isSwitch ? 'hidden' : ''};
+  // text-decoration: ${({check, name}) => check ? 'line-through' : 'none'};
 `;
 const ListCheckBox = styled.input`
   width: 20px;
@@ -23,7 +26,9 @@ const ListCheckBox = styled.input`
   margin: 0px 15px;
   border: 2px;
 `;
-const ListText = styled.p``;
+const ListText = styled.p`
+  margin : 0px;
+`;
 const ListButton = styled.button`
   font-weight: 500;
   color: #6eace6;
@@ -36,27 +41,20 @@ const ListButton = styled.button`
 `;
 
 function ListItem(props) {
-  const { handleDelete, value, index } = props;
-  const [check, setCheck] = useState(false);
-  function handleCheck() {
-    if (check === true) {
-      setCheck(false);
-    } else {
-      setCheck(true);
-    }
-  }
+  const {value, index, handleDelete, handleCheck,isCheck} = props;
+  // useEffect(()=>{
+  //   console.log(props);
+  // },[props])
+
   return (
-    <ListDiv
-      key={index}
-      style={{ textDecorationLine: check === true ? "line-through" : "none" }}
-    >
+    <ListDiv isCheck={isCheck}>   
       <ListCheckBox
         type="checkbox"
-        checked={check}
-        onChange={handleCheck}
+        isCheck={isCheck}
+        onChange={()=>handleCheck(index)}
       ></ListCheckBox>
       <ListText>{value}</ListText>
-      <ListButton onClick={() => handleDelete(index)}></ListButton>
+      <ListButton onClick={() => handleDelete(index)}>X</ListButton>
     </ListDiv>
   );
 }
