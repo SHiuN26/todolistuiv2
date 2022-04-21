@@ -180,7 +180,7 @@ function App() {
       }
     });
     //以上函示化
-    setPercent((checkCount / data.length) * 100);
+    setPercent(Math.round((checkCount / data.length) * 100));
   }
   return (
     <div className="App">
