@@ -145,14 +145,7 @@ function App() {
 
   function handleSwitch(isSwitch) {
     const newData = [...data];
-    //以下函示化
-    let checkCount = 0;
-    newData.forEach((item) => {
-      if (item.isCheck === true) {
-        checkCount += 1;
-      }
-    });
-    //將上段程式函式化
+    checkCount(newData);
     if (isSwitch) {
       if (checkCount === 0) {
         return; //如果checkbox沒有任何一個被勾選，則不進行排序
@@ -171,16 +164,19 @@ function App() {
   }
 
   function percentCount(data) {
-    //以下函示化
-    let checkCount = 0;
+    checkCount(data);
+    setPercent(Math.round((checkCount(data) / data.length) * 100));
+  }
+  function checkCount(data) {
+    let count = 0;
     data.forEach((item) => {
       if (item.isCheck === true) {
-        checkCount += 1;
+        count += 1;
         //加總checkbox=true的數量
       }
     });
-    //以上函示化
-    setPercent(Math.round((checkCount / data.length) * 100));
+    console.log(count);
+    return count;
   }
   return (
     <div className="App">
