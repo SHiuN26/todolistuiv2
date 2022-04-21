@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 
 const ListDiv = styled.div`
@@ -44,15 +43,6 @@ const ListButton = styled.button`
 
 function ListItem(props) {
   const { value, index, handleDelete, handleCheck, isCheck } = props;
-  // useEffect(()=>{
-  //   console.log(props);
-  // },[props])
-
-  console.log("index = ", index);
-
-  if (value === "Aaaaaaaa") {
-    console.log("isCheck = ", isCheck);
-  }
 
   return (
     <ListDiv isCheck={isCheck}>

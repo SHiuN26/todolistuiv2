@@ -1,7 +1,6 @@
 import ListItem from "./ListItem";
 function ListAll(props) {
   const { data, handleDelete, handleCheck } = props;
-  // console.log(props);
   const newData = data.map((item) => {
     return (
       <ListItem

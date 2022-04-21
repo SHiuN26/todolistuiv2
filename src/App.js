@@ -2,7 +2,6 @@ import "./App.css";
 import { useState } from "react";
 import styled from "styled-components";
 import ListAll from "./ListAll";
-// import {Checkbox, Switch} from 'antd';
 import { Switch } from "antd";
 import "antd/dist/antd.css";
 import { BsPlusSquareFill } from "react-icons/bs";
@@ -115,12 +114,11 @@ function App() {
     const addTodo = { key: data.length + 1, value: val, isCheck: false };
     const newData = [...data, addTodo].map((item, index) => {
       return {
-        ...item, //待理解
-        key: index, //待理解
+        ...item,
+        key: index,
       };
     });
     setData(newData);
-    // setItem("");
     percentCount(newData);
   }
   function handleDelete(index) {
@@ -138,55 +136,49 @@ function App() {
 
   function handleCheck(key) {
     const newData = [...data];
-    // console.log(newData);
     const dataIndex = newData.map((x) => x.key).indexOf(key);
-    if (newData[dataIndex].isCheck === true) {
-      newData[dataIndex].isCheck = false;
-      setData(newData);
-      percentCount(newData);
-    } else {
-      newData[dataIndex].isCheck = true;
-      setData(newData);
-      percentCount(newData);
-    }
+    newData[dataIndex].isCheck = !newData[dataIndex].isCheck;
+    setData(newData);
+    percentCount(newData);
   }
 
   function handleSwitch(isSwitch) {
-    // console.log('複製前 data = ', data)
     const newData = [...data];
+    //以下函示化
     let checkCount = 0;
     newData.forEach((item) => {
       if (item.isCheck === true) {
         checkCount += 1;
       }
     });
+    //將上段程式函式化
     if (isSwitch) {
       if (checkCount === 0) {
-        return;
+        return; //如果checkbox沒有任何一個被勾選，則不進行排序
       }
       newData.sort((item) => (item.isCheck === true ? 1 : -1));
-      // console.log('複製後 data = ', newData)
+      //如果check被勾選，則進行完成事項排序
       setData(newData);
       setSwitch(!isSwitch);
     } else {
+      //如果開關關閉，則依照key值進行陣列排序
       newData.sort((a, b) => {
-        // console.log('a = ', a)
         return a.key - b.key;
       });
-      // console.log(' newData = ', newData)
       setData(newData);
     }
   }
 
   function percentCount(data) {
+    //以下函示化
     let checkCount = 0;
     data.forEach((item) => {
       if (item.isCheck === true) {
         checkCount += 1;
-      } else {
-        // checkCount-=1;
+        //加總checkbox=true的數量
       }
     });
+    //以上函示化
     setPercent((checkCount / data.length) * 100);
   }
   return (
