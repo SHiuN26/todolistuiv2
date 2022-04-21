@@ -119,6 +119,7 @@ function App() {
         key: index,
       };
     });
+    newData.sort((item) => (item.isCheck === true ? 1 : -1));
     setData(newData);
     percentCount(newData);
   }
