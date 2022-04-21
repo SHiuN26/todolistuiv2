@@ -6,7 +6,7 @@ import ListAll from "./ListAll";
 import { Switch } from "antd";
 import "antd/dist/antd.css";
 import { BsPlusSquareFill } from "react-icons/bs";
-import { Progress } from 'antd';
+import { Progress } from "antd";
 //---------------------------------------
 const Container = styled.div`
   background-color: #636363;
@@ -47,7 +47,7 @@ const Container = styled.div`
     box-sizing: border-box;
     // border: 1px solid black;
     padding: 20px 30px;
-    position:relative;
+    position: relative;
   }
   .Footer p {
     color: #6eace6;
@@ -65,7 +65,7 @@ const Container = styled.div`
     justify-content: flex-start;
     align-content: stretch;
     box-sizing: border-box;
-    position: relative ;
+    position: relative;
     // margin-top: 0px;
     margin-top: 120px;
   }
@@ -78,7 +78,6 @@ const Container = styled.div`
     margin-right: 5px;
     background-color: #808080;
     color: white;
-
   }
   .Footer .addButton {
     height: 40px;
@@ -92,9 +91,9 @@ const Container = styled.div`
   }
   .Footer span {
     color: white;
-    position:absolute;
+    position: absolute;
     margin-top: -10px;
-    right:30px;
+    right: 30px;
   }
 `;
 
@@ -107,13 +106,13 @@ function App() {
     { key: 3, value: "Ddddddddd", isCheck: false },
   ]);
   const [isSwitch, setSwitch] = useState(false);
-  const [percent,setPercent] = useState(0);
-  function addItem(val) {
+  const [percent, setPercent] = useState(0);
+
+  function AddItem(val) {
     if (val === "") {
       return;
     }
     const addTodo = { key: data.length + 1, value: val, isCheck: false };
-    // const newData = [...data, addTodo]
     const newData = [...data, addTodo].map((item, index) => {
       return {
         ...item, //待理解
@@ -121,12 +120,9 @@ function App() {
       };
     });
     setData(newData);
-    console.log('addItem newData = ', newData);
     // setItem("");
-    
     percentCount(newData);
   }
-
   function handleDelete(index) {
     const newData = [...data];
     const dataIndex = newData.map((x) => x.key).indexOf(index);
@@ -156,45 +152,42 @@ function App() {
   }
 
   function handleSwitch(isSwitch) {
-    
     // console.log('複製前 data = ', data)
     const newData = [...data];
-    let checkCount =0 ;
-    newData.forEach(item => {
-      if(item.isCheck===true){
-        checkCount+=1;
+    let checkCount = 0;
+    newData.forEach((item) => {
+      if (item.isCheck === true) {
+        checkCount += 1;
       }
     });
-    if (isSwitch) { 
-      if(checkCount===0){
+    if (isSwitch) {
+      if (checkCount === 0) {
         return;
-      }    
+      }
       newData.sort((item) => (item.isCheck === true ? 1 : -1));
-      console.log('複製後 data = ', newData)
+      // console.log('複製後 data = ', newData)
       setData(newData);
-      setSwitch(!isSwitch)
-    } 
-    else {
-      newData.sort((a,b)=>{
+      setSwitch(!isSwitch);
+    } else {
+      newData.sort((a, b) => {
         // console.log('a = ', a)
-        return a.key-b.key
+        return a.key - b.key;
       });
-        // console.log(' newData = ', newData)
+      // console.log(' newData = ', newData)
       setData(newData);
     }
   }
 
-  function percentCount () {
-    let checkCount =0 ;
-    data.forEach(item => {
-      if(item.isCheck===true){
-        checkCount+=1;
-        
-      }else {
+  function percentCount(data) {
+    let checkCount = 0;
+    data.forEach((item) => {
+      if (item.isCheck === true) {
+        checkCount += 1;
+      } else {
         // checkCount-=1;
       }
     });
-    setPercent(checkCount/data.length*100);
+    setPercent((checkCount / data.length) * 100);
   }
   return (
     <div className="App">
@@ -212,8 +205,11 @@ function App() {
           />
         </div>
         <div className="Footer">
-          <span>Move done items to the end? <Switch defaultChecked={isSwitch} onChange={handleSwitch} /></span>
-          
+          <span>
+            Move done items to the end?{" "}
+            <Switch defaultChecked={isSwitch} onChange={handleSwitch} />
+          </span>
+
           <p>Add to todo list</p>
           <div className="addArea">
             <input
@@ -222,10 +218,10 @@ function App() {
               value={item}
               onChange={(event) => setItem(event.target.value)}
             ></input>
-            <BsPlusSquareFill 
+            <BsPlusSquareFill
               className="addButton"
               onClick={() => {
-                addItem(item);
+                AddItem(item);
               }}
             ></BsPlusSquareFill>
           </div>

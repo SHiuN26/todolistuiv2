@@ -6,7 +6,7 @@ const ListDiv = styled.div`
   width: 100%;
   border: 2px solid #6eace6;
   border-left: 6px solid #6eace6;
-  
+
   margin-bottom: 10px;
   border-radius: 5px;
   color: white;
@@ -17,8 +17,8 @@ const ListDiv = styled.div`
   justify-content: flex-start;
   align-content: stretch;
   align-items: center;
-  // display:${(props) => props.isSwitch ? 'hidden' : ''};
-  // text-decoration: ${({isCheck}) => isCheck ? 'line-through' : 'none'};
+  // display:${(props) => (props.isSwitch ? "hidden" : "")};
+  // text-decoration: ${({ isCheck }) => (isCheck ? "line-through" : "none")};
 `;
 const ListCheckBox = styled.input`
   width: 20px;
@@ -27,9 +27,9 @@ const ListCheckBox = styled.input`
   border: 2px;
 `;
 const ListText = styled.p`
-  margin : 0px;
-  // color: ${({isCheck}) => isCheck === true ? 'red' : '#FFF'};
-  text-decoration: ${(props) => props.isCheck ? 'line-through' : 'none'};
+  margin: 0px;
+  // color: ${({ isCheck }) => (isCheck === true ? "red" : "#FFF")};
+  text-decoration: ${(props) => (props.isCheck ? "line-through" : "none")};
 `;
 const ListButton = styled.button`
   font-weight: 500;
@@ -43,24 +43,25 @@ const ListButton = styled.button`
 `;
 
 function ListItem(props) {
-  const {value, index, handleDelete, handleCheck,isCheck} = props;
+  const { value, index, handleDelete, handleCheck, isCheck } = props;
   // useEffect(()=>{
   //   console.log(props);
   // },[props])
 
-  console.log('index = ', index)
+  console.log("index = ", index);
 
-  if(value === 'Aaaaaaaa') {
-    console.log('isCheck = ', isCheck)
+  if (value === "Aaaaaaaa") {
+    console.log("isCheck = ", isCheck);
   }
 
   return (
-    <ListDiv isCheck={isCheck}>   
+    <ListDiv isCheck={isCheck}>
       <ListCheckBox
         type="checkbox"
         isCheck={isCheck}
         checked={isCheck}
-        onChange={()=>handleCheck(index)}
+        check={isCheck}
+        onChange={() => handleCheck(index)}
       ></ListCheckBox>
       <ListText isCheck={isCheck}>{value}</ListText>
       <ListButton onClick={() => handleDelete(index)}>X</ListButton>
