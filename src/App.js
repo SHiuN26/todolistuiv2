@@ -5,6 +5,8 @@ import ListAll from "./ListAll";
 // import {Checkbox, Switch} from 'antd';
 import { Switch } from "antd";
 import "antd/dist/antd.css";
+import { BsPlusSquareFill } from "react-icons/bs";
+import { Progress } from 'antd';
 //---------------------------------------
 const Container = styled.div`
   background-color: #636363;
@@ -44,48 +46,55 @@ const Container = styled.div`
     width: 100%;
     box-sizing: border-box;
     // border: 1px solid black;
+    padding: 20px 30px;
+    position:relative;
   }
   .Footer p {
     color: #6eace6;
     padding: 15px 30px 0px 30px;
     margin: 0px;
-    margin-top: 110px;
+    margin-top: 80px;
+    position: absolute;
+    left: 0px;
   }
   .Footer .addArea {
     width: 100%;
-    padding: 0px 30px;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-content: stretch;
-    align-items: center;
     box-sizing: border-box;
-    position: relative;
-    margin-top: 0px;
+    position: relative ;
+    // margin-top: 0px;
+    margin-top: 120px;
   }
   .Footer .addInput {
     border-style: none;
     border-radius: 4px;
     border: 1px solid #6eace6;
-    height: 30px;
+    height: 40px;
     width: 90%;
     margin-right: 5px;
     background-color: #808080;
     color: white;
-    display: inline-block;
+
   }
   .Footer .addButton {
-    height: 36px;
+    height: 40px;
     width: 10%;
     background-color: #6eace6;
     border-style: none;
     border-radius: 3px;
     color: white;
     font-weight: 900;
-    // &hover: Pointer;
-    display: inline-block;
     cursor: pointer;
+  }
+  .Footer span {
+    color: white;
+    position:absolute;
+    margin-top: -10px;
+    right:30px;
   }
 `;
 
@@ -96,15 +105,15 @@ function App() {
     { key: 1, value: "Bbbbbbbbbb", isCheck: false },
     { key: 2, value: "Ccccccccccc", isCheck: false },
     { key: 3, value: "Ddddddddd", isCheck: false },
-    { key: 4, value: "Eeeeeeeeeee", isCheck: false },
   ]);
   const [isSwitch, setSwitch] = useState(false);
-
+  const [percent,setPercent] = useState(0);
   function addItem(val) {
     if (val === "") {
       return;
     }
     const addTodo = { key: data.length + 1, value: val, isCheck: false };
+    // const newData = [...data, addTodo]
     const newData = [...data, addTodo].map((item, index) => {
       return {
         ...item, //待理解
@@ -112,7 +121,10 @@ function App() {
       };
     });
     setData(newData);
+    console.log('addItem newData = ', newData);
     // setItem("");
+    
+    percentCount(newData);
   }
 
   function handleDelete(index) {
@@ -128,35 +140,61 @@ function App() {
     setData(newData1);
   }
 
-  function handleCheck(index) {
+  function handleCheck(key) {
     const newData = [...data];
-    console.log(newData);
-    const dataIndex = newData.map((x) => x.key).indexOf(index);
+    // console.log(newData);
+    const dataIndex = newData.map((x) => x.key).indexOf(key);
     if (newData[dataIndex].isCheck === true) {
       newData[dataIndex].isCheck = false;
       setData(newData);
+      percentCount(newData);
     } else {
       newData[dataIndex].isCheck = true;
       setData(newData);
+      percentCount(newData);
     }
   }
 
   function handleSwitch(isSwitch) {
+    
+    // console.log('複製前 data = ', data)
     const newData = [...data];
-    const newData2 = [...data];
-    if (isSwitch === true) {
+    let checkCount =0 ;
+    newData.forEach(item => {
+      if(item.isCheck===true){
+        checkCount+=1;
+      }
+    });
+    if (isSwitch) { 
+      if(checkCount===0){
+        return;
+      }    
       newData.sort((item) => (item.isCheck === true ? 1 : -1));
-      console.log(newData);
+      console.log('複製後 data = ', newData)
       setData(newData);
-      setSwitch(isSwitch);
-    } else {
-      console.log(newData2);
-      // newData2.sort(function (a, b) {
-      //   return a.index - b.index;
-      // });
-      setData(data);
-      setSwitch(isSwitch);
+      setSwitch(!isSwitch)
+    } 
+    else {
+      newData.sort((a,b)=>{
+        // console.log('a = ', a)
+        return a.key-b.key
+      });
+        // console.log(' newData = ', newData)
+      setData(newData);
     }
+  }
+
+  function percentCount () {
+    let checkCount =0 ;
+    data.forEach(item => {
+      if(item.isCheck===true){
+        checkCount+=1;
+        
+      }else {
+        // checkCount-=1;
+      }
+    });
+    setPercent(checkCount/data.length*100);
   }
   return (
     <div className="App">
@@ -164,6 +202,7 @@ function App() {
         <div className="TopArea">
           <h1>Todo List</h1>
           <span>Get things done,one item add a time</span>
+          <Progress percent={percent} />
         </div>
         <div className="ListArea">
           <ListAll
@@ -173,7 +212,8 @@ function App() {
           />
         </div>
         <div className="Footer">
-          <Switch defaultChecked={isSwitch} onChange={handleSwitch} />
+          <span>Move done items to the end? <Switch defaultChecked={isSwitch} onChange={handleSwitch} /></span>
+          
           <p>Add to todo list</p>
           <div className="addArea">
             <input
@@ -182,12 +222,12 @@ function App() {
               value={item}
               onChange={(event) => setItem(event.target.value)}
             ></input>
-            <button
+            <BsPlusSquareFill 
               className="addButton"
               onClick={() => {
                 addItem(item);
               }}
-            ></button>
+            ></BsPlusSquareFill>
           </div>
         </div>
       </Container>
