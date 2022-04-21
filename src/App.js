@@ -77,6 +77,7 @@ const Container = styled.div`
     margin-right: 5px;
     background-color: #808080;
     color: white;
+    cursor: pointer;
   }
   .Footer .addButton {
     height: 40px;
